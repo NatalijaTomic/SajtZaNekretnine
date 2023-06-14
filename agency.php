@@ -1,15 +1,27 @@
+<!-- /*
+* Template Name: Property
+* Template Author: Untree.co
+* Template URI: https://untree.co/
+* License: https://creativecommons.org/licenses/by/3.0/
+*/ -->
 <?php
-header("Cache-Control: no-cache, must-revalidate");
-header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-?>
+session_start();
+if (!empty($_SESSION["agency_id"])) {
+  $id = $_SESSION["agency_id"];
+} else {
+  session_unset();
+  $url = "./login.php";
+  header("Location: $url");
+}
+session_write_close() ?>
 <?php
-header("Cache-Control: no-cache, must-revalidate");
-
+use DreamTeam\Agency;
 use DreamTeam\Property;
-
+require_once __DIR__ . '/lib/Agency.php';
 require_once __DIR__ . '/lib/Property.php';
 $property = new Property();
-$properties = $property->getProperties();
+$agencies = new Agency();
+$properties = $property->getAgencyProperties();
 ?>
 <!-- /*
 * Template Name: Property

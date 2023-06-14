@@ -74,5 +74,16 @@ class Property
         $resultArray = $this->ds->select($query, $paramType, $paramValue);
         return $resultArray;
     }
+    
+    public function getAgencyProperties()
+    {
+        $query = 'SELECT * FROM tbl_property where agency_id = ?';
+        $paramType = 'i';
+        $paramValue = array(
+            $_SESSION["agency_id"],
+        );
+        $agencyPropertyRecord = $this->ds->select($query, $paramType, $paramValue);
+        return $agencyPropertyRecord;
     }
+}
 ?>

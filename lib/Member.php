@@ -53,6 +53,7 @@ class Member
         if (!empty($memberRecord)) {
             if (!empty($_POST["password"])) {
                 $password = $_POST["password"];
+                echo "ima pasvord";
             }
             $hashedPassword = $memberRecord[0]["password"];
             $loginPassword = 0;
@@ -61,6 +62,7 @@ class Member
             }
         } else {
             $loginPassword = 0;
+            echo "nema pasvord";
         }
         if ($loginPassword == 1) {
             // login sucess so store the member's username in
@@ -68,6 +70,7 @@ class Member
             session_start();
             $_SESSION["username"] = $memberRecord[0]["username"];
             $_SESSION["name"] = $memberRecord[0]["name"];
+            $_SESSION["agency_id"] = $memberRecord[0]["agency_id"];
             $_SESSION["userType"] = $this->userTypeToText($memberRecord[0]["usertype"]);
             session_write_close();
             $url = "index.php";
