@@ -34,8 +34,8 @@ $properties = $property->getProperties();
         <h1 class="heading" data-aos="fade-up">
           Najlakši način da pronađete Vaš dom iz snova
         </h1>
-        <form action="#" class="narrow-w form-search d-flex align-items-stretch mb-3" data-aos="fade-up" data-aos-delay="200">
-          <input type="text" class="form-control px-4" placeholder="Unesite pojam za pretragu:Grad ili Opštinu..." />
+        <form method="post" action="search.php" class="narrow-w form-search d-flex align-items-stretch mb-3" data-aos="fade-up" data-aos-delay="200">
+          <input type="text" class="form-control px-4" required placeholder="Unesite željenu cenu nekretnine." />
           <button type="submit" class="btn btn-primary">Pretraži</button>
         </form>
       </div>

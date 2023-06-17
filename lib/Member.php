@@ -29,6 +29,16 @@ class Member
         return $memberRecord;
     }
 
+    public function getMembers()
+    {
+        $query = 'SELECT m.*, s.id as statusId, s.status as status FROM tbl_member m INNER JOIN tbl_status s ON m.status_id = s.id where usertype <> 0';
+        $paramType = '';
+        $paramValue = array(
+        );
+        $memberRecords = $this->ds->select($query, $paramType, $paramValue);
+        return $memberRecords;
+    }
+
     public function getAgency()
     {
         $query = 'SELECT * FROM tbl_agency';
@@ -36,12 +46,46 @@ class Member
         return $agencyRecord;
     }
 
-    public function updateMember($userIds)
+    public function updateMember($userId)
     {
-        $query = 'UPDATE tbl_member SET  status_id = 1 where id in ( ? )';
+        $query = 'SELECT * FROM tbl_member where id = ?';
         $paramType = 'i';
         $paramValue = array(
-            $userIds
+            $userId
+        );
+        $resultArray = $this->ds->select($query, $paramType, $paramValue);
+        $count = 0;
+        if (is_array($resultArray)) {
+            $count = count($resultArray);
+        }
+        if ($count > 0) {
+            $status = $resultArray[0]["status_id"];
+            $query = 'UPDATE tbl_member SET status_id = ? where id in ( ? )';
+            $paramType = 'ii';
+            $paramValue = array(
+                $status == 1 ? 3 : 1,
+                $userId              
+            );
+            $this->ds->execute($query, $paramType, $paramValue);
+        }
+    }
+
+    public function removeMember($userId)
+    {
+        $query = 'DELETE FROM tbl_member where id = ?';
+        $paramType = 'i';
+        $paramValue = array(
+            $userId
+        );
+        $this->ds->execute($query, $paramType, $paramValue);
+    }
+    public function updateFavProp($username)
+    {
+        $query = 'UPDATE tbl_member SET fav_prop_id = ? where username = ?';
+        $paramType = 'is';
+        $paramValue = array(
+            $_POST["id"],
+            $username
         );
         $this->ds->execute($query, $paramType, $paramValue);
     }
@@ -78,33 +122,6 @@ class Member
         } else if ($loginPassword == 0) {
             $loginStatus = "Netačno korisničko ime ili lozinka.";
             return $loginStatus;
-        }
-    }
-
-    public function registerMember2()
-    {
-        $name = $_POST['name'];
-        $email = $_POST['email'];
-        $password = $_POST['password'];
-        $passwordcheck = $_POST['passwordcheck'];
-
-        // Validate the input data
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            die("Neispravan format imejl adrese.");
-        }
-        if (strlen($password) < 8) {
-            die("Lozinka mora da sadrži najmanje 8 karaktera.");
-        }
-
-        // Insert the user's information into the database
-        $sql = "INSERT INTO tbl_member (name, email, password)
-            VALUES ('$name', '$email', '$password')";
-
-        if ($this->ds->insert($sql, "", array())) {
-            // Redirect the user to the success page
-            header("Location: success.php");
-        } else {
-            echo "Error: " . $sql . "<br>";
         }
     }
 
@@ -154,7 +171,7 @@ class Member
             $query = 'INSERT INTO tbl_member (name, lastname, username, password, email, phone, 
                                                 birthdate, city, usertype, agency_id, agent_licence, status_id) 
                                                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-            $paramType = 'ssssssdsiisi';
+            $paramType = 'ssssssssiisi';
             $paramValue = array(
                 $_POST["name"],
                 $_POST["lastname"],
@@ -162,7 +179,7 @@ class Member
                 $hashedPassword,
                 $_POST["email"],
                 $_POST["phone"],
-                $_POST["birthdate"],
+                date ("Y-m-d",strtotime ($_POST["birthdate"])),
                 $_POST["city"],
                 $_POST["usertype"],
                 $_POST["agency_id"],
@@ -270,15 +287,47 @@ class Member
     {
         switch ($usertype) {
             case 0:
-                return 'admin';
+                return 'Admin';
             case 1:
-                return 'customer';
+                return 'Kupac';
             case 2:
-                return 'sole agent';
+                return 'Agent za nekretnine';
             case 3:
-                return 'agency';
+                return 'Agencija';
             default:
-                return 'customer';
+                return 'Kupac';
+        }
+    }
+
+    public function userTypeToClass($usertype)
+    {
+        switch ($usertype) {
+            case 0:
+                return 'danger';
+            case 1:
+                return 'success';
+            case 2:
+                return 'info';
+            case 3:
+                return 'warning';
+            default:
+                return 'success';
+        }
+    }
+
+    public function userStatusToCheckbox($userstatus, $userId)
+    {
+        switch ($userstatus) {
+            case "request":
+                return '<div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked'.$userId.'" value="'.$userId.'" >
+                <label class="form-check-label" for="flexSwitchCheckChecked">Neaktivan</label>
+              </div>';
+            case "active":
+                return '<div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked'.$userId.'"  value="'.$userId.'" checked>
+                <label class="form-check-label" for="flexSwitchCheckChecked">Aktivan</label>
+              </div>';
         }
     }
 }

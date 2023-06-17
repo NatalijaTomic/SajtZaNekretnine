@@ -1,9 +1,12 @@
 <?php
-header("Cache-Control: no-cache, must-revalidate");
-header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-?>
+session_start();
+if (!empty($_SESSION["name"])) {
+  $name = $_SESSION["name"];
+} else {
+  session_unset();
+}
+session_write_close() ?>
 <?php
-header("Cache-Control: no-cache, must-revalidate");
 
 use DreamTeam\Property;
 

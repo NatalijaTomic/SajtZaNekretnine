@@ -5,7 +5,7 @@
           <div class="col-lg-4">
             <div class="widget">
               <h3>Kontakt podaci</h3>
-              <address>Milutina Milankovića 87, Beograd</address>
+              <address>DREAM TEAM, Beograd</address>
               <ul class="list-unstyled links">
                 <li><a href="tel://11234567890">+381(64)-456-7890</a></li>
                 <li><a href="tel://11234567890">+381(63)-456-7890</a></li>

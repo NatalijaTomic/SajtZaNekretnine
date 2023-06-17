@@ -85,5 +85,17 @@ class Property
         $agencyPropertyRecord = $this->ds->select($query, $paramType, $paramValue);
         return $agencyPropertyRecord;
     }
+    public function propertyUpdate($id)
+        {
+                $query = 'UPDATE tbl_property SET adresa = ?, opis = ?, cena = ? where id = ?';
+                $paramType = 'ssii';
+                $paramValue = array(
+                    $_POST["adresa"],
+                    $_POST["opis"],
+                    $_POST["cena"],
+                    $id
+                );
+                $this->ds->execute($query, $paramType, $paramValue);
+            }
 }
 ?>

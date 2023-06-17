@@ -10376,3 +10376,4 @@ nav[aria-label="breadcrumb"] li:before {
       .site-footer .social li a:hover {
         background: #00204a;
         color: #fff; }
+.tbl-users .btn-sm{padding:0.18rem 0.5rem;font-size:0.875rem;border-radius:0.5rem}

@@ -32,10 +32,6 @@
                               <span class='icon-car me-2'></span>
                               <span class='caption'>parking</span>
                             </span>
-                            <span class='d-block d-flex align-items-center'>
-                              <span class='icon-car me-2'></span>
-                              <span class='caption'></span>
-                            </span>
                           </div>
                           <form method='GET' action='property-single.php'>
                           <input type='hidden' name='id' value=$id>

@@ -15,11 +15,14 @@ use DreamTeam\Property;
 require_once __DIR__ . '/lib/Member.php';
 require_once __DIR__ . '/lib/Property.php';
 $property = new Property();
-if (!empty($_POST["search-btn"])) {
-  $properties = $property->propertySearch();
-} else {
-  $properties = $property->getProperties();
-}
+if (!empty($_POST["update-btn"])) {
+    $id = $_POST["id"];
+    $updateResult = $property->propertyUpdate($id);
+  }
+  else{
+    $id = $_GET["id"];
+  }
+;
 ?>
 <!-- /*
 * Template Name: Property
@@ -56,14 +59,7 @@ if (!empty($_POST["search-btn"])) {
     <div class="section">
       <div class="container">
         <div class="row">
-          <form method="post" action="search.php">
-            <div class="row justify-content-center">
-              <div class="col-lg-6 btn-group btn-group-toggle" id="slika" data-toggle="buttons">
-                <label class="btn btn-secondary active">
-                  <input type="radio" name="slika" id="slika" value="1" autocomplete="off"> Nekretnine sa slikom
-                </label>
-              </div>
-            </div>
+          <form method="POST" action="property-update.php">
             <div class="row justify-content-center">
               <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
                 <div class="input-group form-group mt-3">
@@ -84,25 +80,13 @@ if (!empty($_POST["search-btn"])) {
                   </div>
                   <input type="number" class="form-control" name="cena" required placeholder="Cena">
                 </div>
-                <div class="form-group mt-3">
-                  <input type="submit" class="btn bg-secondary float-end text-white w-100" value="Pretraga" name="search-btn">
-                </div>
+                <?php echo "<div class='form-group mt-3'>
+                  <input type='hidden' name='id' value=".$id.">
+                  <input type='submit' class='btn bg-secondary float-end text-white w-100' value='Izmenite' name='update-btn'>
+                </div>"; ?>
               </div>
             </div>
           </form>
-        </div>
-      </div>
-    </div>
-    <?php include 'components/properties-show.php'; ?>
-    <div class="row align-items-center py-5">
-      <div class="col-lg-3">Strana (1 od 5)</div>
-      <div class="col-lg-6 text-center">
-        <div class="custom-pagination">
-          <a href="#">1</a>
-          <a href="#" class="active">2</a>
-          <a href="#">3</a>
-          <a href="#">4</a>
-          <a href="#">5</a>
         </div>
       </div>
     </div>

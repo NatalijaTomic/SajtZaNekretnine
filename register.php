@@ -1,12 +1,28 @@
 <?php
 
 use DreamTeam\Member;
-
+//var_dump($_POST);
 require_once __DIR__ . '/lib/Member.php';
 $member = new Member();
 $agencies = $member->getAgency();
-if (!empty($_POST["register-btn"])) {
-  $loginResult = $member->registerMember();
+if (isset($_POST["register-btn"])) {
+  $selectedButton = $_POST["usertype"];
+  switch ($selectedButton) {
+    case '1':
+      $loginResult = $member->registerMember();
+      break;
+    case '2':
+      // Perform action 2
+      $loginResult = $member->registerMember();
+      break;
+    case '3':
+      // Perform action 3
+      $loginResult = $member->registerMember();
+      break;
+    default:
+      echo "Niste odabrali vrstu korisnika";
+      break;
+  }
 }
 ?>
 <!-- /*
@@ -117,7 +133,7 @@ if (!empty($_POST["register-btn"])) {
                 <div class="bg-secondary rounded-start">
                   <span class="m-3"><i class="fas flaticon-381-back-2 mt-2"></i></span>
                 </div>
-                <select type="select" class="form-control" name="agency_id" required placeholder="Agencija">
+                <select type="select" class="form-control" name="agency_id" placeholder="Agencija">
                   <option selected>Odaberite...</option>
 
                   <?php
@@ -136,7 +152,7 @@ if (!empty($_POST["register-btn"])) {
                 <div class="bg-secondary rounded-start">
                   <span class="m-3"><i class="fas fa-key mt-2"></i></span>
                 </div>
-                <input type="text" maxlength="20" class="form-control" name="agent_licence" required placeholder="Broj licence agenta">
+                <input type="text" maxlength="20" class="form-control" name="agent_licence" placeholder="Broj licence agenta">
               </div>
             </div>
             <div class="form-group mt-3">

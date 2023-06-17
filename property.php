@@ -18,4 +18,4 @@
 </div>
 </div>
 <!-- .item -->
-<!-- povloačenje informacija o pojedinačnim nekretninama iz baze i prikaz-->
+<!-- povlačenje informacija o pojedinačnim nekretninama iz baze i prikaz-->
