@@ -19,6 +19,12 @@ class Property
     }
         public function getProperties()
         {
+            $query = 'SELECT * FROM tbl_property WHERE status_id = 1';
+            $propertyRecord = $this->ds->select($query);
+            return $propertyRecord;
+        }
+        public function getPropertiesAgency()
+        {
             $query = 'SELECT * FROM tbl_property';
             $propertyRecord = $this->ds->select($query);
             return $propertyRecord;
@@ -97,5 +103,14 @@ class Property
                 );
                 $this->ds->execute($query, $paramType, $paramValue);
             }
+    public function propSold($id)
+    {
+        $query = 'UPDATE tbl_property SET status_id = 4 where id = ?';
+        $paramType = 'i';
+        $paramValue = array(
+            $id,
+        );
+        $this->ds->execute($query, $paramType, $paramValue);
+    }
 }
 ?>

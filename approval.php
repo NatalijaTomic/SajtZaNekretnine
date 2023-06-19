@@ -136,10 +136,9 @@ if (isset($_POST["register-btn"])) {
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <form  id="formModalEdit" method="post" onSubmit="return false;">
-      <div class="modal-body">
+        <div class="modal-body">
     
        <strong>Korisnik - <span class="modal-user"></span></strong>
-        <form>
           <div class="mb-3">
             <label for="user-firstname" class="col-form-label">Ime:</label>
             <input name="user-firstname"  type="text" class="form-control" id="user-firstname">
@@ -151,7 +150,7 @@ if (isset($_POST["register-btn"])) {
           <div class="mb-3">
             <label for="user-type" class="col-form-label">Tip:</label>
             <select  name="user-type" type="select" class="form-control" id="user-type">
-              <option class="option" value="1">Korisnik</option>
+              <option class="option" value="1">Kupac</option>
               <option class="option" value="2">Agent</option>
               <option class="option" value="3">Agencija</option>
             </select>
@@ -172,10 +171,10 @@ if (isset($_POST["register-btn"])) {
                 </select>
                 <div class="mb-3">
             <label for="user-agencylicence" class="col-form-label">Licenca:</label>
-            <input  name="user-agencylicence"  type="text" class="form-control" id="user-agencylicence">
+            <input  name="user-agencylicence" maxlength="10"  type="text" class="form-control" id="user-agencylicence">
           </div>
       </div>
-      <div class="modal-footer">
+        <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Odustani</button>
         
         <input type="hidden" name="userId">
@@ -282,8 +281,9 @@ $(document).ready(function() {
         if (data=="ok") 
          {
           rowId = id.split('=')[1];
-          $('#tbl-users tr[value="' +rowId + '"]').remove();
-          $('#removeModal').modal('toggle');
+          $('#tbl-users tr[value="' +rowId + '"] td:eq(2)').text($('#user-type option:selected').text());
+          location.reload();
+          $('#editModal').modal('toggle');
         }
         return false;
       }

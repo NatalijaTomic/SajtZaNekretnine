@@ -1,15 +1,4 @@
 <?php
-session_start();
-if (!empty($_SESSION["name"])) {
-  $name = $_SESSION["name"];
-} else {
-  session_unset();
-  $url = "./login.php";
-  header("Location: $url");
-}
-session_write_close() ?>
-
-<?php
 
 use DreamTeam\Property;
 

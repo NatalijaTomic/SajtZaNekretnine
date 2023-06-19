@@ -19,8 +19,6 @@ if(isset($_POST["id"])){
   $username = $_SESSION["username"];
   $favproperty = $member->updateFavProp($username);
     echo "Omiljena nekretnina izmenjena.";
-    echo $id;
-    var_dump($_SESSION);
   }else{
    echo  "Omiljena nekretnina nije izmenjena.";
   }

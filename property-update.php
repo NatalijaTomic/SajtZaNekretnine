@@ -17,10 +17,18 @@ require_once __DIR__ . '/lib/Property.php';
 $property = new Property();
 if (!empty($_POST["update-btn"])) {
     $id = $_POST["id"];
+    $propPicked = $property->getProperty($id);
+    $adresa = $propPicked[0]["adresa"];
+    $opis = $propPicked[0]["opis"];
+    $cena = $propPicked[0]["cena"];
     $updateResult = $property->propertyUpdate($id);
   }
   else{
     $id = $_GET["id"];
+    $propPicked = $property->getProperty($id);
+    $adresa = $propPicked[0]["adresa"];
+    $opis = $propPicked[0]["opis"];
+    $cena = $propPicked[0]["cena"];
   }
 ;
 ?>
@@ -66,19 +74,19 @@ if (!empty($_POST["update-btn"])) {
                   <div class="bg-secondary rounded-start">
                     <span class="m-3"><i class="fas fa-key mt-2"></i></span>
                   </div>
-                  <input type="text" class="form-control" name="adresa" placeholder="Adresa">
+                  <input type="text" class="form-control" name="adresa" value="<?php echo $adresa ?>" placeholder="Adresa">
                 </div>
                 <div class="input-group form-group mt-3">
                   <div class="bg-secondary rounded-start">
                     <span class="m-3"><i class="fas fa-key mt-2"></i></span>
                   </div>
-                  <input type="text" class="form-control" name="opis" placeholder="Opis">
+                  <input type="text" class="form-control" name="opis" value="<?php echo $opis ?>" placeholder="Opis">
                 </div>
                 <div class="input-group form-group mt-3">
                   <div class="bg-secondary rounded-start">
                     <span class="m-3"><i class="fas fa-key mt-2"></i></span>
                   </div>
-                  <input type="number" class="form-control" name="cena" required placeholder="Cena">
+                  <input type="number" class="form-control" name="cena" value="<?php echo $cena ?>" required placeholder="Cena">
                 </div>
                 <?php echo "<div class='form-group mt-3'>
                   <input type='hidden' name='id' value=".$id.">

@@ -54,7 +54,8 @@ session_write_close() ?>
               $writeType = ", " . $userType;
             else
               $writeType = "";
-            echo "<span class=\"text-warning\">Prijavljen: " . $ime . $writeType . "</span>";
+            echo "<li class=\"has-children\"><a class=\"text-warning\">Prijavljen: " . $ime . $writeType . "</a><ul class=\"dropdown\"><li><a href=\"myprofile.php\">Moj profil</a></li>
+  </ul>";
           } ?>
           <?php if (!empty($_SESSION["name"]) && $_SESSION["userType"] == 'Admin') {
           ?>

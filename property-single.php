@@ -90,15 +90,27 @@ if (isset($agency_id) &&  $agency_id != null) {
         <p class='text-black-50'>
           <?php echo $opis ?>
         </p>
-        <?php if (!empty($name) && (in_array($userType, ['Agencija', 'Agent za nekretnine', 'Admin']))) { ?> <form method='GET' action='property-update.php'>
-            <input type='hidden' name='id' value=<?php echo $propertyId?>>
-            <input type='submit' value='Izmenite' class='btn btn-primary py-2 px-3'>
-          </form><?php } else { ?><button id="favoriteButton" class="btn btn-primary py-2 px-3" data-property-id=<?php echo $propertyId?>>Omiljena nekretnina</button><?php } ?>
+        <?php if (!empty($name) && in_array($userType, ['Agencija', 'Agent za nekretnine', 'Admin'])) { ?>
+          <div>
+            <div>
+              <form method="GET" action="property-update.php">
+                <input type="hidden" name="id" value="<?php echo $propertyId ?>">
+                <input type="submit" value="Izmenite" class="btn btn-primary py-2 px-3">
+              </form>
+            </div><br />
+            <div><button id="soldButton" class="btn btn-primary py-2 px-3" data-property-id="<?php echo $propertyId ?>">Prodato</button></div>
+          </div>
+        <?php } else { ?>
+          <form id="favoriteButton" class="custom-checkbox">
+            <input type="checkbox" data-property-id="<?php echo $propertyId ?>">
+            <span>Omiljena nekretnina</span>
+          </form>
+        <?php } ?>
         <div class='d-block agent-box p-5'>
           <div class='img mb-4'>
             <div id="bingmap"></div>
           </div>
-        </div> 
+        </div>
         <div class='d-block agent-box p-5'>
           <div class='img mb-4'>
             <?php echo "<img
@@ -130,10 +142,11 @@ if (isset($agency_id) &&  $agency_id != null) {
           </div>
         </div>
       </div>
+     <br/>
     </div>
-    <?php include 'components/footer.php'; ?>
   </div>
 </div>
+<?php include 'components/footer.php'; ?>
 
 <!-- Preloader -->
 <div id="overlayer"></div>
@@ -158,13 +171,35 @@ if (isset($agency_id) &&  $agency_id != null) {
       }
     })
   });
-  $('#favoriteButton').click(function() {
+  document.addEventListener('DOMContentLoaded', function() {
+    var checkbox = document.querySelector('#favoriteButton input[type="checkbox"]');
+    checkbox.addEventListener('click', function() {
+      var propertyId = this.getAttribute('data-property-id');
+      $.ajax({
+        url: 'favProperty.php',
+        type: 'POST',
+        data: {
+          id: propertyId
+        },
+        success: function(response) {
+          console.log(response); // Response from the PHP script
+          // Perform any additional actions or update UI accordingly
+        },
+        error: function(xhr, status, error) {
+          console.log(error); // Log any error messages
+        }
+      });
+    });
+  });
+  $('#soldButton').click(function() {
     $(this).toggleClass('clicked');
     var propertyId = $(this).data('property-id');
     $.ajax({
-      url: 'favProperty.php',
+      url: 'propSold.php',
       type: 'POST',
-      data: { id: propertyId },
+      data: {
+        id: propertyId
+      },
       success: function(response) {
         console.log(response); // Response from the PHP script
         // Perform any additional actions or update UI accordingly

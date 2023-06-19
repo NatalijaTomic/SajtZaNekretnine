@@ -33,5 +33,25 @@ class Agency
         $agencyRecord = $this->ds->select($query, $paramType, $paramValue);
         return $agencyRecord;
     }
+    public function agencyInsert()
+        {
+                $query = 'INSERT INTO tbl_agency (agency, adresa, opis, slika) 
+                                                    VALUES (?, ?, ?, ?)';
+                $paramType = 'ssis';
+                $paramValue = array(
+                    $_POST["adresa"],
+                    $_POST["opis"],
+                    $_POST["cena"],
+                    $_POST["slika"],
+                );
+                $memberId = $this->ds->insert($query, $paramType, $paramValue);
+                if (!empty($memberId)) {
+                    $response = array(
+                        "status" => "success",
+                        "message" => "Uspešno ste uneli nekretninu."
+                    );
+                }
+                return $response;
+            }
     }
 ?>

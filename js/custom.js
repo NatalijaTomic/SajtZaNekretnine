@@ -140,6 +140,28 @@
 					agencyField.className  = "d-none";
 			}	
 		};
+
+		// var pswChangeLink = $('#passwordChangeLink');
+		// if (pswChangeLink) {
+		// 	pswChangeLink.click(function(e) {
+		// 		e.preventDefault();
+		// 		passwordChange();
+		// 	  });
+		// }	
+			  
+
+		function passwordChange() {
+			var pswChangeDiv = $('#passwordChange');
+			var pswChangeLinkDiv = $('#passwordChangeLink');
+			if(pswChangeDiv.hasClass("d-none")){
+				pswChangeDiv.attr("class","d-block"); 
+				pswChangeLinkDiv.attr("class","d-none"); 
+			}
+			else {
+				pswChangeDiv.attr("class","d-none"); 
+				pswChangeLinkDiv.attr("class","d-block"); 
+			}
+		};
 	}
 	dreamTeam();
 })()

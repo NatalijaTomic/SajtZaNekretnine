@@ -114,7 +114,7 @@ if (isset($_POST["register-btn"])) {
               <div class="bg-secondary rounded-start">
                 <span class="m-3"><i class="fas fa-key mt-2"></i></span>
               </div>
-              <input type="date" class="form-control" name="birthdate" required placeholder="Datum rodjenja">
+              <input type="date" class="form-control" name="birthdate" required placeholder="Datum rođenja">
             </div>
             <div class="input-grup form-group mt-3">
               <div class="bg-secondary rounded-start">
@@ -134,7 +134,7 @@ if (isset($_POST["register-btn"])) {
                   <span class="m-3"><i class="fas flaticon-381-back-2 mt-2"></i></span>
                 </div>
                 <select type="select" class="form-control" name="agency_id" placeholder="Agencija">
-                  <option selected>Odaberite...</option>
+                  <option selected>Odaberite agenciju...</option>
 
                   <?php
                   if (is_array($agencies)) {
@@ -154,6 +154,15 @@ if (isset($_POST["register-btn"])) {
                 </div>
                 <input type="text" maxlength="20" class="form-control" name="agent_licence" placeholder="Broj licence agenta">
               </div>
+              <div class="d-block" id="addAgencyLink">
+              <div class="input-grup form-group mt-3">
+                      <div class="bg-secondary rounded-start">
+                        <span class="m-3"><i class="fas fa-key mt-2"></i></span>
+                      </div><br/>
+                <button type="button" class="btn btn-secondary  btn-sm" data-bs-toggle="modal" data-bs-target="#newagencyModal">Dodaj novu agenciju</button>
+                <div id="newAgencyAdded" class="text-success"></div>
+              </div>
+          </div>
             </div>
             <div class="form-group mt-3">
               <input type="submit" class="btn bg-secondary float-end text-white w-100" value="Registracija" name="register-btn">
@@ -187,7 +196,75 @@ if (isset($_POST["register-btn"])) {
     <span class="visually-hidden">Loading...</span>
   </div>
 </div>
+<!-- ADD AGENCY Modal -->
+<div class="modal newagencyModal" id="newagencyModal" tabindex="-1" aria-labelledby="newagencyModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="newagencyModalLabel">Dodajte novu agenciju</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form id="formModalnewagency" method="post" onSubmit="return false;">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="agency-name" class="col-form-label">Ime agencije:</label>
+            <input name="agency-name" type="text" class="form-control" id="agency-name">
+          </div>
+          <div class="mb-3">
+            <label for="agency-adresa" class="col-form-label">Adresa agencije:</label>
+            <input name="agency-adresa" type="text" class="form-control" id="agency-adresa">
+          </div>
+          <div class="mb-3">
+            <label for="agency-opis" class="col-form-label">Opis agencije:</label>
+            <input name="agency-opis" type="text" class="form-control" id="agency-opis">
+          </div>
+          <div class="mb-3">
+            <label for="agency-slika" class="col-form-label">Slika:</label>
+            <input name="agency-slika" type="text" class="form-control" id="agency-slika">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Odustani</button>
+          <button type="submit" name="modal-new-agency" class="btn btn-primary modal-new-agency">Dodaj novu agenciju</button>
+          <div id="modalError" class="row justify-content-center text-danger fw-bold mt-3">
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 
+<script type="application/javascript">
+  var newagencyModal = document.getElementById('newagencyModal')
+  newagencyModal.addEventListener('show.bs.modal', function(event) {
+    $('#modalError').text("");
+    $('#newAgencyAdded').text("");
+  });
+  $(document).ready(function() {
+    $("#formModalnewagency").on("submit", function(event) {
+      $('#newAgencyAdded').text('');
+      $.ajax({
+        type: 'POST',
+        url: 'agencyAdd.php',
+        data: $(this).serialize(),
+        success: function(data) {
+          data = JSON.parse(data);
+          if (data.status == "success") {
+            $('#newAgencyAdded').text(data.message);
+            $('#modalError').text("");
+            $('#newAgencyAdded').modal('toggle');
+          } else {
+            $('#modalError').text(data.message);
+          }
+          return false;
+        }
+      });
+    });
+
+
+
+  });
+</script>
 <script src="js/bootstrap.bundle.min.js"></script>
 <script src="js/tiny-slider.js"></script>
 <script src="js/aos.js"></script>

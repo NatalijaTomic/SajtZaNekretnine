@@ -6,6 +6,7 @@
  */
 
 namespace DreamTeam;
+use Exception;
 
 class Member
 {
@@ -70,6 +71,112 @@ class Member
         }
     }
 
+    public function updateMemberProfile($userId)
+    {
+            $query = 'UPDATE tbl_member SET name = ?, lastname = ?, usertype = ?, agency_id = ?, agent_licence = ? where id in ( ? )';
+            $paramType = 'ssiisi';
+            $paramValue = array(
+                $_POST["user-firstname"],
+                $_POST["user-lastname"],
+                $_POST["user-type"],
+                $_POST["agency_id"],
+                $_POST["user-agencylicence"],     
+                $userId       
+            );
+            $this->ds->execute($query, $paramType, $paramValue);
+    }
+    public function updateMemberFullProfile($username)
+    {
+        $isEmailExists =  $_SESSION["email"] != $_POST["email"] && $this->isEmailExists($_POST["email"]);
+        if ($isEmailExists) {
+            $response = array(
+                "status" => "error",
+                "message" => "Ovaj imejl je već u upotrebi."
+            );
+        }
+            $query = 'UPDATE tbl_member SET name = ?, lastname = ?, email= ?, phone= ?, 
+            birthdate= ?, city= ?, agency_id = ?, agent_licence = ? 
+            where username = ?';
+            $paramType = 'ssssssiss';
+            $paramValue = array(
+                $_POST["name"],
+                $_POST["lastname"],
+                $_POST["email"],
+                $_POST["phone"],
+                date("Y-m-d",strtotime ($_POST["birthdate"])),
+                $_POST["city"],
+                $_POST["agency_id"],
+                $_POST["agent_licence"],     
+                $username       
+            );
+            try{
+                $this->ds->execute($query, $paramType, $paramValue);
+                $response = array(
+                    "status" => "success",
+                    "message" => "Uspešno ste se izmenili podatke!"
+                );
+            }catch (Exception $e){
+                $response = array(
+                    "status" => "error",
+                    "message" => $e->getMessage()
+                );
+            }
+
+        return $response;
+    }
+
+    public function updateMemberPassword($username)
+    {
+        if($username == $_SESSION["username"])
+        {
+            $passwordMatches = $this->isPasswordMatches($_POST['password'], $_POST['passwordcheck']);
+            if (!$passwordMatches) {
+                $response = array(
+                    "status" => "error",
+                    "message" => "Lozinke se ne poklapaju."
+                );
+            } else if (strlen($_POST['password']) < 8) {
+                $response = array(
+                    "status" => "error",
+                    "message" => "Lozinka je kraća od 8 karaktera."
+                );
+            } else {
+                if (!empty($_POST["password"])) {
+
+                    // PHP's password_hash is the best choice to use to store passwords
+                    // do not attempt to do your encryption, it is not safe
+                    $hashedPassword = password_hash($_POST["password"], PASSWORD_DEFAULT);
+                }
+                $query = 'UPDATE tbl_member SET  password= ?
+                where username = ?';
+                $paramType = 'ss';
+                $paramValue = array(    
+                    $hashedPassword,           
+                    $username       
+                );
+                try{
+                    $this->ds->execute($query, $paramType, $paramValue);
+                    $response = array(
+                        "status" => "success",
+                        "message" => "Uspešno ste se izmenili šifru!"
+                    );
+                }catch (Exception $e){
+                    $response = array(
+                        "status" => "error",
+                        "message" => "Greška: ". $e->getMessage()
+                    );
+                }
+            }
+        }
+        else{
+            $response = array(
+                "status" => "error",
+                "message" => "Greška: Ne možete promeniti šifru drugog usera ;) "
+            );
+        }
+        return $response;
+    }
+
     public function removeMember($userId)
     {
         $query = 'DELETE FROM tbl_member where id = ?';
@@ -97,7 +204,7 @@ class Member
         if (!empty($memberRecord)) {
             if (!empty($_POST["password"])) {
                 $password = $_POST["password"];
-                echo "ima pasvord";
+                //echo "ima pasvord";
             }
             $hashedPassword = $memberRecord[0]["password"];
             $loginPassword = 0;
@@ -106,14 +213,16 @@ class Member
             }
         } else {
             $loginPassword = 0;
-            echo "nema pasvord";
+            //echo "nema pasvord";
         }
         if ($loginPassword == 1) {
             // login sucess so store the member's username in
             // the session
             session_start();
+            $_SESSION["userid"] = $memberRecord[0]["id"];
             $_SESSION["username"] = $memberRecord[0]["username"];
             $_SESSION["name"] = $memberRecord[0]["name"];
+            $_SESSION["email"] = $memberRecord[0]["email"];
             $_SESSION["agency_id"] = $memberRecord[0]["agency_id"];
             $_SESSION["userType"] = $this->userTypeToText($memberRecord[0]["usertype"]);
             session_write_close();
@@ -318,6 +427,21 @@ class Member
     public function userStatusToCheckbox($userstatus, $userId)
     {
         switch ($userstatus) {
+            case "request":
+                return '<div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked'.$userId.'" value="'.$userId.'" >
+                <label class="form-check-label" for="flexSwitchCheckChecked">Neaktivan</label>
+              </div>';
+            case "active":
+                return '<div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked'.$userId.'"  value="'.$userId.'" checked>
+                <label class="form-check-label" for="flexSwitchCheckChecked">Aktivan</label>
+              </div>';
+        }
+    }
+    public function favPropToCheckbox($propertyId, $userId)
+    {
+        switch ($propertyId) {
             case "request":
                 return '<div class="form-check form-switch">
                 <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked'.$userId.'" value="'.$userId.'" >

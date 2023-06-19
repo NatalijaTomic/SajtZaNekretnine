@@ -15,7 +15,7 @@ require_once __DIR__ . '/lib/Member.php';
 $member = new Member();
 
   if(isset($_POST['userId'])){
-    $member->removeMember($_POST['userId']);
+    $member->updateMemberProfile($_POST['userId']);
     echo "ok";
   }else{
    echo  "false";
