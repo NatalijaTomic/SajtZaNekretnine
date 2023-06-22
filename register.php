@@ -8,15 +8,9 @@ $agencies = $member->getAgency();
 if (isset($_POST["register-btn"])) {
   $selectedButton = $_POST["usertype"];
   switch ($selectedButton) {
-    case '1':
-      $loginResult = $member->registerMember();
-      break;
-    case '2':
-      // Perform action 2
-      $loginResult = $member->registerMember();
-      break;
-    case '3':
-      // Perform action 3
+      case '1':
+      case '2':
+      case '3':
       $loginResult = $member->registerMember();
       break;
     default:
@@ -133,7 +127,7 @@ if (isset($_POST["register-btn"])) {
                 <div class="bg-secondary rounded-start">
                   <span class="m-3"><i class="fas flaticon-381-back-2 mt-2"></i></span>
                 </div>
-                <select type="select" class="form-control" name="agency_id" placeholder="Agencija">
+                <select type="select" class="form-control" name="agency_id" id="select_agency_id" placeholder="Agencija">
                   <option selected>Odaberite agenciju...</option>
 
                   <?php
@@ -167,18 +161,8 @@ if (isset($_POST["register-btn"])) {
             <div class="form-group mt-3">
               <input type="submit" class="btn bg-secondary float-end text-white w-100" value="Registracija" name="register-btn">
             </div>
-
-          </div>
-          <?php if (!empty($loginResult) && $loginResult["status"] == "error") { ?>
-            <div class="row justify-content-center text-danger fw-bold mt-3">
-              <?php echo ("Greška: " . $loginResult["message"]); ?>
-            </div>
-          <?php }
-          if (!empty($loginResult) && $loginResult["status"] == "success") { ?>
-            <div class="row justify-content-center text-success fw-bold mt-3">
-              <?php echo ($loginResult["message"]); ?>
-            </div>
-          <?php } ?>
+            <div id="modalError" class="row justify-content-center text-danger fw-bold mt-3">
+          </div>    
         </div>
       </form>
     </div>
@@ -208,15 +192,15 @@ if (isset($_POST["register-btn"])) {
         <div class="modal-body">
           <div class="mb-3">
             <label for="agency-name" class="col-form-label">Ime agencije:</label>
-            <input name="agency-name" type="text" class="form-control" id="agency-name">
+            <input name="agency-name" type="text" class="form-control" id="agency-name" required>
           </div>
           <div class="mb-3">
             <label for="agency-adresa" class="col-form-label">Adresa agencije:</label>
-            <input name="agency-adresa" type="text" class="form-control" id="agency-adresa">
+            <input name="agency-adresa" type="text" class="form-control" id="agency-adresa" required>
           </div>
           <div class="mb-3">
             <label for="agency-opis" class="col-form-label">Opis agencije:</label>
-            <input name="agency-opis" type="text" class="form-control" id="agency-opis">
+            <input name="agency-opis" type="text" class="form-control" id="agency-opis" required>
           </div>
           <div class="mb-3">
             <label for="agency-slika" class="col-form-label">Slika:</label>
@@ -252,7 +236,8 @@ if (isset($_POST["register-btn"])) {
           if (data.status == "success") {
             $('#newAgencyAdded').text(data.message);
             $('#modalError').text("");
-            $('#newAgencyAdded').modal('toggle');
+            $("select#select_agency_id").append('<option class="option" value=' + data.id + '>' + $("#agency-name").val() + '</option>');
+            $('#newagencyModal').modal('toggle');
           } else {
             $('#modalError').text(data.message);
           }
