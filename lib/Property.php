@@ -6,6 +6,7 @@
  */
 
 namespace DreamTeam;
+use Exception;
 
 class Property
 {
@@ -41,20 +42,46 @@ class Property
         }
     public function propertyInsert()
         {
-                $query = 'INSERT INTO tbl_property (adresa, opis, cena, slika) 
-                                                    VALUES (?, ?, ?, ?)';
-                $paramType = 'ssis';
+            if (strlen($_POST["adresa"])>0){
+                $response = array(
+                    "status" => "error",
+                    "message" => "Adresa nije uneta."
+                );
+            } else if (strlen($_POST["cena"])>0){
+                $response = array(
+                    "status" => "error",
+                    "message" => "Cena nije uneta."
+                );
+            }
+                $query = 'INSERT INTO tbl_property (adresa, opis, cena, slika, status_id, agency_id) 
+                                                    VALUES (?, ?, ?, ?, ?, ?)';
+                $paramType = 'ssisii';
                 $paramValue = array(
                     $_POST["adresa"],
                     $_POST["opis"],
                     $_POST["cena"],
                     $_POST["slika"],
+                    1,
+                    $_POST["agency_id"],
                 );
-                $memberId = $this->ds->insert($query, $paramType, $paramValue);
-                if (!empty($memberId)) {
+                try{
+                $propertyId = $this->ds->insert($query, $paramType, $paramValue);
+                if (!empty($propertyId)) {
                     $response = array(
                         "status" => "success",
-                        "message" => "Uspešno ste uneli nekretninu."
+                        "message" => "Uspešno ste uneli nekretninu.",
+                        "id" => $propertyId
+                    );
+                }
+                else
+                $response = array(
+                    "status" => "error",
+                    "message" => "Nekretnina nije uneta."
+                );
+                }catch (Exception $e){
+                    $response = array(
+                        "status" => "error",
+                        "message" => $e->getMessage()
                     );
                 }
                 return $response;

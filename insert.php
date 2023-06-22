@@ -2,6 +2,7 @@
 session_start();
 if (!empty($_SESSION["name"])) {
   $name = $_SESSION["name"];
+  $agencyId = $_SESSION["agency_id"];
 } else {
   session_unset();
   $url = "./login.php";
@@ -77,6 +78,9 @@ if (!empty($_POST["insert-btn"])) {
                 <span class="m-3"><i class="fas fa-key mt-2"></i></span>
               </div>
               <input type="text" class="form-control" name="slika" required placeholder="Slika">
+            </div>
+            <div class="form-group mt-3">
+              <input type="hidden" value="<?php echo $agencyId ?>" name="agency_id">
             </div>
             <div class="form-group mt-3">
               <input type="submit" class="btn bg-secondary float-end text-white w-100" value="Unos nekretnine" name="insert-btn">

@@ -158,7 +158,7 @@ class Member
                     $this->ds->execute($query, $paramType, $paramValue);
                     $response = array(
                         "status" => "success",
-                        "message" => "Uspešno ste se izmenili šifru!"
+                        "message" => "Uspešno ste izmenili šifru!"
                     );
                 }catch (Exception $e){
                     $response = array(

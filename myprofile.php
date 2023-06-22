@@ -184,8 +184,8 @@ $userType = $member->userTypeToText($user[0]["usertype"]);
     <span class="visually-hidden">Loading...</span>
   </div>
 </div>
-
-<!-- EDIT USER Modal -->
+            
+<!-- CHANGE PASSWORD Modal -->
 <div class="modal passwordModal" id="passwordModal" tabindex="-1" aria-labelledby="passwordModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">

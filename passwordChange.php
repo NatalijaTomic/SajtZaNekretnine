@@ -15,13 +15,9 @@ require_once __DIR__ . '/lib/Member.php';
 $member = new Member();
 
   if(isset($_POST['username'])){
-    $loginResult = $member->updateMemberPassword($_POST['username']);
-    // if (!empty($loginResult && $loginResult["status"] == "success"))
-    //   echo ($loginResult["message"]);
-    //   if (!empty($loginResult && $loginResult["status"] == "error"))
-    //   echo ($loginResult["message"]);
+    $passwordChangeResult = $member->updateMemberPassword($_POST['username']);
 
-    echo json_encode( unserialize(serialize($loginResult)));
+    echo json_encode( unserialize(serialize($passwordChangeResult)));
 
   }else{
       array(

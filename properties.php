@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!empty($_SESSION["name"]) && $_SESSION["userType"]== 'Admin') {
+if (!empty($_SESSION["name"]) && $_SESSION["userType"]== 'Admin'|| $_SESSION["userType"] == 'Kupac' || $_SESSION["userType"] == 'Agencija' || $_SESSION["userType"] == 'Agent za nekretnine') {
   $name = $_SESSION["name"];
 } else {
   session_unset();
