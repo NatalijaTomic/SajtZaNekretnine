@@ -11,6 +11,8 @@ if (!empty($_SESSION["name"])) {
   $userType = $_SESSION["userType"];
 } else {
   session_unset();
+  $url = "./login.php";
+  header("Location: $url");
 }
 session_write_close() ?>
 <?php
@@ -41,6 +43,11 @@ if (isset($agency_id) &&  $agency_id != null) {
   $opis_ag = $agency[0]["opis"];
   $slika_ag = $agency[0]["slika"];
 }
+$slikaSufix =  (strpos($slika, ".png") !== false || strpos($slika, ".jpg") !== false) ? "" : ".jpg"; 
+$slika = $slika .$slikaSufix;
+
+$slika_agSufix =  (strpos($slika, ".png") !== false || strpos($slika, ".jpg") !== false) ? "" : ".jpg"; 
+$slika_ag = $slika_ag .$slika_agSufix;
 ?>
 <?php include 'components/layout.php'; ?>
 <?php include 'components/site-nav.php'; ?>
@@ -75,9 +82,7 @@ if (isset($agency_id) &&  $agency_id != null) {
       <div class='col-lg-7'>
         <div class='img-property-slide-wrap'>
           <div class='img-property-slide'>
-            <?php echo "<img src='images/" . $slika . ".jpg' alt='Image' class='img-fluid' />
-                <img src='images/" . $slika . ".jpg' alt='Image' class='img-fluid' />
-                <img src='images/" . $slika . ".jpg' alt='Image' class='img-fluid' />"; ?>
+            <?php echo "<img src='images/" . $slika . "' alt='Image' class='img-fluid' />"; ?>
           </div>
         </div>
       </div>
@@ -114,7 +119,7 @@ if (isset($agency_id) &&  $agency_id != null) {
         <div class='d-block agent-box p-5'>
           <div class='img mb-4'>
             <?php echo "<img
-                  src='images/" . $slika_ag . ".jpg'
+                  src='images/" . $slika_ag . ".jpg' 
                   alt='Image'
                   class='img-fluid'
                 />"; ?>

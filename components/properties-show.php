@@ -6,13 +6,15 @@
             foreach ($properties as $property) {
               $id = $property['id'];
               $slika = $property['slika'];
+              $slikaSufix =  (strpos($slika, ".png") !== false || strpos($slika, ".jpg") !== false) ? "" : ".jpg"; 
+              $slika = $slika .$slikaSufix;
               $cena = $property['cena'];
               $adresa = $property['adresa'];
               $opis = $property['opis'];
               echo "
               <div class='col-xs-12 col-sm-6 col-md-6 col-lg-4'>
                 <div class='property-item mb-30'>
-                  <img src='images/".$property['slika'].".jpg' onclick='location.href=\"property-single.php?id=$id\"' alt='Image' class='img-fluid'/>
+                  <img src='images/".$slika."' onclick='location.href=\"property-single.php?id=$id\"' alt='Image' class='img-fluid'/>
                         
                   <div class='property-content'>
                     <div class='price mb-2'><span>€ ".number_format((int)$property['cena'])."</span></div>

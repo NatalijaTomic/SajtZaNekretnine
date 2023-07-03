@@ -47,6 +47,16 @@ class Agency
                         "message" => "Adresa nije uneta."
                     );
                 }
+                $image = $_FILES['agency-slika']['name'];  //the original name of the image
+
+                $file_tmp =$_FILES['agency-slika']['tmp_name']; //The temporary filename of the file in which the uploaded image was stored on the server.
+                try{
+                    move_uploaded_file($file_tmp,"images/".$image); //uploads the image to the defined folder
+                }
+                catch (Exception $ex){
+                    $image = "";
+                }
+
                 $query = 'INSERT INTO tbl_agency (agency, adresa, opis, slika) 
                                                     VALUES (?, ?, ?, ?)';
                 $paramType = 'ssss';
@@ -54,7 +64,7 @@ class Agency
                     $_POST["agency-name"],
                     $_POST["agency-adresa"],
                     $_POST["agency-opis"],
-                    $_POST["agency-slika"],
+                    $image,
                 );
                 try{
                 $agencyId = $this->ds->insert($query, $paramType, $paramValue);

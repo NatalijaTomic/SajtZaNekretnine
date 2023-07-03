@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="fonts/flaticon/font/flaticon.css" />
   <link rel="stylesheet" href="css/tiny-slider.css" />
   <link rel="stylesheet" href="css/aos.css" />
-  <link rel="stylesheet" href="css/style.css?v=1" />
+  <link rel="stylesheet" href="css/style.css?v=3" />
   <script src="https://kit.fontawesome.com/your-font-awesome-kit.js" crossorigin="anonymous"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
   <title>

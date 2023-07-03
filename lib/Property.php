@@ -53,6 +53,16 @@ class Property
                     "message" => "Cena nije uneta."
                 );
             }
+            $image = $_FILES['property_image']['name'];  //the original name of the image
+
+            $file_tmp =$_FILES['property_image']['tmp_name']; //The temporary filename of the file in which the uploaded image was stored on the server.
+            try{
+                move_uploaded_file($file_tmp,"images/".$image); //uploads the image to the defined folder
+            }
+            catch (Exception $ex){
+                $image = "";
+            }
+
                 $query = 'INSERT INTO tbl_property (adresa, opis, cena, slika, status_id, agency_id) 
                                                     VALUES (?, ?, ?, ?, ?, ?)';
                 $paramType = 'ssisii';
@@ -60,9 +70,9 @@ class Property
                     $_POST["adresa"],
                     $_POST["opis"],
                     $_POST["cena"],
-                    $_POST["slika"],
+                    $image,
                     1,
-                    $_POST["agency_id"],
+                    $_SESSION["userType"]== 'Kupac' ? NULL : $_POST["agency_id"]
                 );
                 try{
                 $propertyId = $this->ds->insert($query, $paramType, $paramValue);

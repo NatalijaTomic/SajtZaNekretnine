@@ -70,8 +70,8 @@ $properties = $property->getAgencyProperties();
       <div class="col-lg-3">Strana (1 od 5)</div>
       <div class="col-lg-6 text-center">
         <div class="custom-pagination">
-          <a href="#">1</a>
-          <a href="#" class="active">2</a>
+          <a href="#" class="active">1</a>
+          <a href="#">2</a>
           <a href="#">3</a>
           <a href="#">4</a>
           <a href="#">5</a>

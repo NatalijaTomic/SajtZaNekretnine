@@ -79,7 +79,7 @@ class Member
                 $_POST["user-firstname"],
                 $_POST["user-lastname"],
                 $_POST["user-type"],
-                $_POST["agency_id"],
+                $_POST["agency_id"]??NULL,
                 $_POST["user-agencylicence"],     
                 $userId       
             );
@@ -105,7 +105,7 @@ class Member
                 $_POST["phone"],
                 date("Y-m-d",strtotime ($_POST["birthdate"])),
                 $_POST["city"],
-                $_POST["agency_id"],
+                $_POST["agency_id"]??NULL,
                 $_POST["agent_licence"],     
                 $username       
             );
@@ -226,7 +226,7 @@ class Member
             $_SESSION["agency_id"] = $memberRecord[0]["agency_id"];
             $_SESSION["userType"] = $this->userTypeToText($memberRecord[0]["usertype"]);
             session_write_close();
-            $url = "index.php";
+            $url = "properties.php";
             header("Location: $url");
         } else if ($loginPassword == 0) {
             $loginStatus = "Netačno korisničko ime ili lozinka.";
@@ -291,7 +291,7 @@ class Member
                 date ("Y-m-d",strtotime ($_POST["birthdate"])),
                 $_POST["city"],
                 $_POST["usertype"],
-                $_POST["agency_id"],
+                $_POST["agency_id"]??NULL,
                 $_POST["agent_licence"],
                 3
             );

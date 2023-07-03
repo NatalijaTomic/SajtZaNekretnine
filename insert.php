@@ -51,7 +51,7 @@ if (!empty($_POST["insert-btn"])) {
 <div class="section">
   <div class="container">
     <div class="row">
-      <form method="post" action="insert.php">
+      <form method="post" action="insert.php" enctype="multipart/form-data">
         <div class="row justify-content-center">
           <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
             <div class="input-grup form-group mt-3">
@@ -74,11 +74,14 @@ if (!empty($_POST["insert-btn"])) {
               <input type="text" class="form-control" name="opis" required placeholder="Opis nekretnine">
             </div>
             <div class="input-group form-group mt-3">
+              Odaberite sliku
+          </div>
+            <div class="input-group form-group mt-3">
               <div class="bg-secondary rounded-start">
                 <span class="m-3"><i class="fas fa-key mt-2"></i></span>
+              </div>             
+                <input placeholder="Slika" type="file" id="property_image" name="property_image" class="form-control" accept="image/png, image/jpeg" required>           
               </div>
-              <input type="text" class="form-control" name="slika" required placeholder="Slika">
-            </div>
             <div class="form-group mt-3">
               <input type="hidden" value="<?php echo $agencyId ?>" name="agency_id">
             </div>
@@ -104,7 +107,7 @@ if (!empty($_POST["insert-btn"])) {
 </div>
 <!-- /.untree_co-section -->
 
-
+</script>
 
 <?php include 'components/footer.php'; ?>
 <!-- Preloader -->

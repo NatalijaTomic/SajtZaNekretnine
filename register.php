@@ -188,7 +188,7 @@ if (isset($_POST["register-btn"])) {
         <h5 class="modal-title" id="newagencyModalLabel">Dodajte novu agenciju</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form id="formModalnewagency" method="post" onSubmit="return false;">
+      <form id="formModalnewagency" method="post" onSubmit="return false;" enctype="multipart/form-data">
         <div class="modal-body">
           <div class="mb-3">
             <label for="agency-name" class="col-form-label">Ime agencije:</label>
@@ -204,7 +204,9 @@ if (isset($_POST["register-btn"])) {
           </div>
           <div class="mb-3">
             <label for="agency-slika" class="col-form-label">Slika:</label>
-            <input name="agency-slika" type="text" class="form-control" id="agency-slika">
+            <!-- <input name="agency-slika" type="text" class="form-control" id="agency-slika"> -->
+            <input placeholder="Slika" type="file" id="agency-slika" name="agency-slika" class="form-control" accept="image/png, image/jpeg" required>           
+            
           </div>
         </div>
         <div class="modal-footer">
@@ -227,10 +229,15 @@ if (isset($_POST["register-btn"])) {
   $(document).ready(function() {
     $("#formModalnewagency").on("submit", function(event) {
       $('#newAgencyAdded').text('');
+      var formdata= new FormData(this);
       $.ajax({
         type: 'POST',
         url: 'agencyAdd.php',
-        data: $(this).serialize(),
+        data: formdata,
+        processData: false,
+        contentType: false,
+        cache: false,
+        enctype: 'multipart/form-data',
         success: function(data) {
           data = JSON.parse(data);
           if (data.status == "success") {
